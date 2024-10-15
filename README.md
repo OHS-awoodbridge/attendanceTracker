@@ -12,4 +12,4 @@ MQTT based attendance tracker proejct for student attendance via RFID
 * circuitpython-mfrc522 (https://www.cytron.io/tutorial/interface-rfid-rc522-reader-using-maker-pi-pico-and-circuitpython)
 * CircuitPython_LCD (https://github.com/dhalbert/CircuitPython_LCD/tree/main)
 
-## Project details are hosted on https://maker.wiznet.io/awoodbridge/contest/rfid%2Dattendance%2Dsystem/
+Project details are hosted on https://maker.wiznet.io/awoodbridge/contest/rfid%2Dattendance%2Dsystem/
