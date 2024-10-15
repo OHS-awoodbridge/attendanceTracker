@@ -24,8 +24,8 @@ aio_key = os.getenv("aio_key")
 
 
 #setup SPI for W5500
-cs = DigitalInOut(board.GP17)
-spi_bus = busio.SPI(board.GP18, MOSI=board.GP19, MISO=board.GP16)
+cs = DigitalInOut(board.GP20)
+spi_bus = busio.SPI(board.GP21, MOSI=board.GP23, MISO=board.GP22)
 
 # Initialize ethernet interface with DHCP
 eth = WIZNET5K(spi_bus, cs)
@@ -35,14 +35,14 @@ i2c = busio.I2C(scl=board.GP1, sda=board.GP0)
 lcd = LCD(I2CPCF8574Interface(i2c, 0x27), num_rows=4, num_cols=20)
 
 #rfid scanner setup
-sck = board.GP6
-mosi = board.GP7
-miso = board.GP4
-spi = busio.SPI(sck, MOSI=mosi, MISO=miso)
+sck_rfid = board.GP6
+mosi_rfid = board.GP7
+miso_rfid = board.GP4
+spi_rfid = busio.SPI(clock=sck_rfid, MOSI=mosi_rfid, MISO=miso_rfid)
 
-cs = digitalio.DigitalInOut(board.GP5)
-rst = digitalio.DigitalInOut(board.GP8)
-rfid = mfrc522.MFRC522(spi, cs, rst)
+cs_rfid = digitalio.DigitalInOut(board.GP5)
+rst_rfid = digitalio.DigitalInOut(board.GP8)
+rfid = mfrc522.MFRC522(spi_rfid, cs_rfid, rst_rfid)
 rfid.set_antenna_gain(0x07 << 4)
 
 lcd.print("\n***** Scan your RFid tag/card *****\n")
