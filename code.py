@@ -35,14 +35,14 @@ i2c = busio.I2C(scl=board.GP1, sda=board.GP0)
 lcd = LCD(I2CPCF8574Interface(i2c, 0x27), num_rows=4, num_cols=20)
 
 #rfid scanner setup
-sck = board.GP14
-mosi = board.GP11
-miso = board.GP12
-cs = board.GP13
-rst = board.GP15
-#spi = busio.SPI(clock=sck, MOSI=mosi, MISO=miso)
+sck = board.GP6
+mosi = board.GP7
+miso = board.GP4
+spi = busio.SPI(sck, MOSI=mosi, MISO=miso)
 
-rfid = mfrc522.MFRC522(sck, mosi, miso ,cs,rst)
+cs = digitalio.DigitalInOut(board.GP5)
+rst = digitalio.DigitalInOut(board.GP8)
+rfid = mfrc522.MFRC522(spi, cs, rst)
 rfid.set_antenna_gain(0x07 << 4)
 
 lcd.print("\n***** Scan your RFid tag/card *****\n")
