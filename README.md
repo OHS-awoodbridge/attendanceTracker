@@ -5,7 +5,7 @@ Microprocessor: W55RP20-EVB Pico (https://docs.wiznet.io/Product/ioNIC/W55RP20/w
 
 Libraries from:
 * adafruit library bundle
-* circuitpython-mfrc522 (https://github.com/domdfcoding/circuitpython-mfrc522)
+* circuitpython-mfrc522 ([https://github.com/domdfcoding/circuitpython-mfrc522](https://www.cytron.io/tutorial/interface-rfid-rc522-reader-using-maker-pi-pico-and-circuitpython))
 * CircuitPython_LCD (https://github.com/dhalbert/CircuitPython_LCD/tree/main)
 
 Project details are hosted on https://maker.wiznet.io/awoodbridge/contest/rfid%2Dattendance%2Dsystem/
