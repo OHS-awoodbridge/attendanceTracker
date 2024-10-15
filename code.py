@@ -121,7 +121,7 @@ while True:
                 lcd.clear()
                 lcd.print("Card detected! UID: {}".format(rfid_data))
                 #post card scan
-                boop_val = str(r.datetime) + ";" + "123456"
+                boop_val = str(r.datetime) + ";" + rfid_data
                 print("Sending boop value: " + boop_val)
                 mqtt_client.publish(scans_feed, boop_val)
                 print("Sent!")
