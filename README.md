@@ -1,6 +1,7 @@
 # attendanceTracker
 MQTT based attendance tracker proejct for student attendance via RFID 
 
+
 Libraries used from:
 * adafruit library bundle
 * circuitpython-mfrc522 (https://github.com/domdfcoding/circuitpython-mfrc522)
