@@ -2,6 +2,9 @@
 MQTT based attendance tracker proejct for student attendance via RFID 
 
 Microprocessor: W55RP20-EVB Pico (https://docs.wiznet.io/Product/ioNIC/W55RP20/w55rp20-evb-pico)
+RFID Sensor: https://a.co/d/1s8QJGu
+20x4 LCD Display: https://a.co/d/1s8QJGu
+
 
 Libraries from:
 * adafruit library bundle
