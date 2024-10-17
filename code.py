@@ -1,6 +1,5 @@
+
 import time
-import rp2pio
-import adafruit_pioasm
 import board
 import digitalio
 import simpleio
@@ -17,57 +16,6 @@ from lcd.lcd import CursorMode
 from adafruit_wiznet5k.adafruit_wiznet5k import WIZNET5K
 from digitalio import DigitalInOut
 import adafruit_minimqtt.adafruit_minimqtt as MQTT
-from wiznet5k_pio import WIZNET5K
-from adafruit_ticks import ticks_ms, ticks_diff
-from micropython import const
-
-from wiznet5k_pio import (
-    SNSR_SOCK_ESTABLISHED,
-    SNSR_SOCK_CLOSE_WAIT,
-    SNSR_SOCK_LISTEN,
-    SNSR_SOCK_CLOSED,
-) 
-
-# PIO assembly code: SPI master implementation
-spi_master = """
-.program spi_master
-    pull block
-    set x, 7
-bitloop:
-    out pins, 1
-    set pins, 1
-    nop [1]
-    in pins, 1
-    set pins, 0
-    jmp x-- bitloop
-    push block
-"""
-
-mac_address = [0x00, 0x08, 0xDC, 0x01, 0x02, 0x03]
-ip_address = [192, 168, 11, 110]
-gateway_ip = [192, 168, 11, 1]
-subnet_mask = [255, 255, 255, 0]
-
-
-assembled = adafruit_pioasm.assemble(spi_master)
-sm = rp2pio.StateMachine(
-    assembled,
-    frequency=1_000_000,
-    first_out_pin=board.GP23,  # mosi
-    first_in_pin=board.GP22,  # miso
-    first_set_pin=board.GP21,  # clk
-    out_pin_count=1,
-    in_pin_count=1,
-    set_pin_count=1,
-    in_shift_right=False,
-    out_shift_right=False,
-    push_threshold=8,
-    pull_threshold=8,
-)
-
-# CS and RST pin setup
-cs_pin = digitalio.DigitalInOut(board.GP20)
-rst_pin = digitalio.DigitalInOut(board.GP25)
 
 # Add settings.toml to your filesystem. Add your Adafruit IO username and key as well.
 # DO NOT share that file or commit it into Git or other source control.
@@ -76,18 +24,12 @@ aio_username = os.getenv("aio_username")
 aio_key = os.getenv("aio_key")
 
 
-
+#setup SPI for W5500
+cs = DigitalInOut(board.GP20)
+spi_bus = busio.SPI(clock=board.GP21, MOSI=board.GP23, MISO=board.GP22)
 
 # Initialize ethernet interface with DHCP
-eth = WIZNET5K(
-    sm,
-    cs_pin,
-    rst_pin,
-    mac_address=mac_address,
-    ip_address=ip_address,
-    gateway_ip=gateway_ip,
-    subnet_mask=subnet_mask,
-)
+eth = WIZNET5K(spi_bus, cs)
 
 # lcd setup
 i2c = busio.I2C(scl=board.GP1, sda=board.GP0)
@@ -141,9 +83,9 @@ ssl_context = adafruit_connection_manager.get_radio_ssl_context(eth)
 
 
 TZ_OFFSET = -8
-#ntp = adafruit_ntp.NTP(pool, tz_offset=TZ_OFFSET, socket_timeout=20)
+ntp = adafruit_ntp.NTP(pool, tz_offset=TZ_OFFSET, socket_timeout=20)
 r = rtc.RTC()
-#r.datetime = ntp.datetime
+r.datetime = ntp.datetime
 
 
 # Set up a MiniMQTT Client
@@ -194,5 +136,4 @@ while True:
             prev_data = ""
             # Poll the message queue
             mqtt_client.loop(1)
-
 
